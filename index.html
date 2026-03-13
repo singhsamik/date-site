@@ -2,99 +2,93 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Will You Go Out With Me?</title>
+<title>Date?</title>
 
 <style>
 
 body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    text-align:center;
-    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
-    height:100vh;
-    overflow:hidden;
+margin:0;
+font-family:Arial, sans-serif;
+text-align:center;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+height:100vh;
+overflow:hidden;
 }
 
 .container{
-    margin-top:120px;
+margin-top:120px;
 }
 
 h1{
-    font-size:38px;
-    color:#333;
+font-size:38px;
+color:#333;
 }
 
 button{
-    font-size:20px;
-    padding:15px 30px;
-    margin:15px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
+font-size:20px;
+padding:15px 30px;
+margin:15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
 }
 
 #yes{
-    background:#ff4d6d;
-    color:white;
+background:#ff4d6d;
+color:white;
 }
 
 #no{
-    background:#555;
-    color:white;
-    position:absolute;
-}
-
-#videoContainer{
-    display:none;
-    margin-top:30px;
+background:#555;
+color:white;
+position:absolute;
 }
 
 iframe{
-    width:90%;
-    max-width:500px;
-    height:280px;
-    border:none;
+width:90%;
+max-width:500px;
+height:280px;
+border:none;
+margin-top:20px;
 }
 
-/* Floating hearts */
-
-.heart{
-    position:fixed;
-    font-size:24px;
-    animation:floatUp 4s linear forwards;
+#videoContainer{
+display:none;
 }
 
-@keyframes floatUp{
-    0%{
-        transform:translateY(0);
-        opacity:1;
-    }
-    100%{
-        transform:translateY(-800px);
-        opacity:0;
-    }
+.confetti{
+position:fixed;
+top:-20px;
+font-size:24px;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(100vh);
+}
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>Will you go on a date with me? 💖</h1>
+<h1 id="question">Will you go on a date with me? 💖</h1>
 
 <button id="yes">Yes 😍</button>
 <button id="no">No 🙃</button>
 
 <div id="videoContainer">
-
-<h2>Yay!! 🎉</h2>
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FxR88PsnfVY?si=haDRusAIf7ZfycfO&amp;controls=0&amp;start=25" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 </div>
 
@@ -102,59 +96,36 @@ iframe{
 
 <script>
 
-const noBtn = document.getElementById("no");
-const yesBtn = document.getElementById("yes");
-const video = document.getElementById("videoContainer");
+const noBtn=document.getElementById("no");
+const yesBtn=document.getElementById("yes");
+const video=document.getElementById("videoContainer");
+const question=document.getElementById("question");
 
-/* Move NO button */
+/* NO button moves */
 
 function moveButton(){
 
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
+const x=Math.random()*(window.innerWidth-100);
+const y=Math.random()*(window.innerHeight-50);
 
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-}
-
-noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("click", moveButton);
-
-
-/* Hearts when hovering YES */
-
-yesBtn.addEventListener("mouseover", createHearts);
-
-function createHearts(){
-
-    for(let i=0;i<6;i++){
-
-        const heart = document.createElement("div");
-
-        heart.classList.add("heart");
-        heart.innerHTML="❤️";
-
-        heart.style.left = Math.random()*window.innerWidth+"px";
-        heart.style.top = window.innerHeight+"px";
-
-        document.body.appendChild(heart);
-
-        setTimeout(()=>{
-            heart.remove();
-        },4000);
-
-    }
+noBtn.style.left=x+"px";
+noBtn.style.top=y+"px";
 
 }
+
+noBtn.addEventListener("mouseover",moveButton);
+noBtn.addEventListener("click",moveButton);
 
 
 /* YES click */
 
-yesBtn.addEventListener("click", ()=>{
+yesBtn.addEventListener("click",()=>{
 
-    video.style.display="block";
+video.style.display="block";
 
-    startConfetti();
+startConfetti();
+
+startQuestions();
 
 });
 
@@ -163,29 +134,61 @@ yesBtn.addEventListener("click", ()=>{
 
 function startConfetti(){
 
-    for(let i=0;i<100;i++){
+for(let i=0;i<80;i++){
 
-        const confetti=document.createElement("div");
+const confetti=document.createElement("div");
 
-        confetti.innerHTML="🎉";
+confetti.className="confetti";
+confetti.innerHTML="🎉";
 
-        confetti.style.position="fixed";
-        confetti.style.left=Math.random()*window.innerWidth+"px";
-        confetti.style.top="-20px";
-        confetti.style.fontSize="24px";
-        confetti.style.animation="floatUp 3s linear forwards";
+confetti.style.left=Math.random()*window.innerWidth+"px";
 
-        document.body.appendChild(confetti);
+document.body.appendChild(confetti);
 
-        setTimeout(()=>{
-            confetti.remove();
-        },3000);
+setTimeout(()=>confetti.remove(),3000);
 
-    }
+}
+
+}
+
+
+/* Questions */
+
+function startQuestions(){
+
+const lines=[
+
+"Where? 🤔",
+"CP??",
+"What? 😏",
+"🍻",
+"Who's paying? 💸",
+"🫵"
+
+];
+
+let i=0;
+
+function next(){
+
+if(i<lines.length){
+
+question.innerHTML=lines[i];
+
+i++;
+
+setTimeout(next,2000);
+
+}
+
+}
+
+next();
 
 }
 
 </script>
 
 </body>
+
 </html>
