@@ -1,57 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Will You Go Out With Me?</title>
 
 <style>
+
 body{
+    margin:0;
     font-family: Arial, sans-serif;
-    background: #ffe6f0;
-    text-align: center;
-    padding-top: 120px;
+    text-align:center;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    height:100vh;
+    overflow:hidden;
+}
+
+.container{
+    margin-top:120px;
 }
 
 h1{
-    font-size: 40px;
+    font-size:38px;
+    color:#333;
 }
 
 button{
-    font-size: 20px;
-    padding: 15px 30px;
-    margin: 20px;
-    cursor: pointer;
-    border-radius: 10px;
-    border: none;
+    font-size:20px;
+    padding:15px 30px;
+    margin:15px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
 }
 
 #yes{
-    background: #ff4d6d;
-    color: white;
+    background:#ff4d6d;
+    color:white;
 }
 
 #no{
-    background: #999;
-    color: white;
-    position: absolute;
+    background:#555;
+    color:white;
+    position:absolute;
 }
+
+#videoContainer{
+    display:none;
+    margin-top:30px;
+}
+
+iframe{
+    width:90%;
+    max-width:500px;
+    height:280px;
+    border:none;
+}
+
+/* Floating hearts */
+
+.heart{
+    position:fixed;
+    font-size:24px;
+    animation:floatUp 4s linear forwards;
+}
+
+@keyframes floatUp{
+    0%{
+        transform:translateY(0);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(-800px);
+        opacity:0;
+    }
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>Will you go on a date with me? ❤️</h1>
+<div class="container">
 
-<button id="yes">Yes 😊</button>
-<button id="no">No 😢</button>
+<h1>Will you go on a date with me? 💖</h1>
+
+<button id="yes">Yes 😍</button>
+<button id="no">No 🙃</button>
+
+<div id="videoContainer">
+
+<h2>Yay!! 🎉</h2>
+
+<iframe 
+src="https://www.youtube.com/embed/FxR88PsnfVY?autoplay=1"
+allow="autoplay; encrypted-media"
+allowfullscreen>
+</iframe>
+
+</div>
+
+</div>
 
 <script>
 
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
+const video = document.getElementById("videoContainer");
 
-// Move NO button randomly
+/* Move NO button */
+
 function moveButton(){
+
     const x = Math.random() * (window.innerWidth - 100);
     const y = Math.random() * (window.innerHeight - 50);
 
@@ -62,10 +124,70 @@ function moveButton(){
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("click", moveButton);
 
-// YES button → play YouTube video
-yesBtn.addEventListener("click", () => {
-    window.location.href = "https://youtu.be/FxR88PsnfVY?si=-PbAotrxeYhVxI7g";
+
+/* Hearts when hovering YES */
+
+yesBtn.addEventListener("mouseover", createHearts);
+
+function createHearts(){
+
+    for(let i=0;i<6;i++){
+
+        const heart = document.createElement("div");
+
+        heart.classList.add("heart");
+        heart.innerHTML="❤️";
+
+        heart.style.left = Math.random()*window.innerWidth+"px";
+        heart.style.top = window.innerHeight+"px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.remove();
+        },4000);
+
+    }
+
+}
+
+
+/* YES click */
+
+yesBtn.addEventListener("click", ()=>{
+
+    video.style.display="block";
+
+    startConfetti();
+
 });
+
+
+/* Confetti */
+
+function startConfetti(){
+
+    for(let i=0;i<100;i++){
+
+        const confetti=document.createElement("div");
+
+        confetti.innerHTML="🎉";
+
+        confetti.style.position="fixed";
+        confetti.style.left=Math.random()*window.innerWidth+"px";
+        confetti.style.top="-20px";
+        confetti.style.fontSize="24px";
+        confetti.style.animation="floatUp 3s linear forwards";
+
+        document.body.appendChild(confetti);
+
+        setTimeout(()=>{
+            confetti.remove();
+        },3000);
+
+    }
+
+}
 
 </script>
 
